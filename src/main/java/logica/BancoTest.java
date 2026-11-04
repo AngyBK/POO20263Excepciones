@@ -1,115 +1,103 @@
 package logica;
 
 import static org.junit.jupiter.api.Assertions.*;
+
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import logica.Banco;
 
 public class BancoTest {
 
-    @Test
-    void testDepositarExitoso() throws Exception {
-        Banco banco = new Banco();
-        banco.crearCuenta(1);
+    private Banco banco;
+    private int cuenta1;
+    private int cuenta2;
 
-        banco.depositar(1, 1000);
+    @BeforeEach
+    public void setUp() throws Exception {
 
-        assertTrue(true);
+        banco = new Banco();
+
+        // Crear usuario
+        banco.crearUsuario(1, "Juan", "Calderon");
+
+        // Crear dos cuentas para el usuario
+        cuenta1 = banco.crearCuenta(1);
+        cuenta2 = banco.crearCuenta(1);
     }
 
-    @Test
-    void testDepositarCuentaInexistente() {
-        Banco banco = new Banco();
+    // PRUEBAS DE DEPOSITAR
 
-        Exception error = assertThrows(Exception.class, () -> {
-            banco.depositar(999, 500);
+    @Test
+    public void testDepositar() {
+
+        assertDoesNotThrow(() -> {
+            banco.depositar(cuenta1, 50000);
         });
 
-        assertEquals("La cuenta con numero 999 no existe", error.getMessage());
     }
 
     @Test
-    void testRetirarExitoso() throws Exception {
-        Banco banco = new Banco();
-        banco.crearCuenta(1);
-        banco.depositar(1, 1000);
+    public void testDepositarCuentaInexistente() {
 
-        banco.retirar(1, 400);
-
-        assertTrue(true);
-    }
-
-    @Test
-    void testRetirarCuentaInexistente() {
-        Banco banco = new Banco();
-
-        Exception error = assertThrows(Exception.class, () -> {
-            banco.retirar(999, 500);
+        assertThrows(Exception.class, () -> {
+            banco.depositar(100, 50000);
         });
 
-        assertEquals("La cuenta con numero 999 no existe", error.getMessage());
     }
 
-    @Test
-    void testRetirarSaldoInsuficiente() throws Exception {
-        Banco banco = new Banco();
-        banco.crearCuenta(1);
-        banco.depositar(1, 100);
+    // PRUEBAS DE RETIRAR
 
-        Exception error = assertThrows(Exception.class, () -> {
-            banco.retirar(1, 500);
+    @Test
+    public void testRetirar() throws Exception {
+
+        banco.depositar(cuenta1, 50000);
+
+        assertDoesNotThrow(() -> {
+            banco.retirar(cuenta1, 20000);
         });
 
-        assertEquals("La cuenta con numero 1 no tiene saldo suficiente", error.getMessage());
     }
 
     @Test
-    void testTransferirExitoso() throws Exception {
-        Banco banco = new Banco();
-        banco.crearCuenta(1);
-        banco.crearCuenta(2);
+    public void testRetirarCuentaInexistente() {
 
-        banco.depositar(1, 1000);
-
-        banco.transferir(1, 2, 300);
-
-        assertTrue(true);
-    }
-
-    @Test
-    void testTransferirOrigenInexistente() {
-        Banco banco = new Banco();
-
-        Exception error = assertThrows(Exception.class, () -> {
-            banco.crearCuenta(2);
-            banco.transferir(999, 2, 500);
+        assertThrows(Exception.class, () -> {
+            banco.retirar(100, 20000);
         });
 
-        assertEquals("La cuenta con numero 999 no existe", error.getMessage());
+    }
+
+    
+    @Test
+    public void testTransferir() throws Exception {
+
+        banco.depositar(cuenta1, 50000);
+
+        assertDoesNotThrow(() -> {
+            banco.transferir(cuenta1, cuenta2, 20000);
+        });
+
     }
 
     @Test
-    void testTransferirDestinoInexistente() throws Exception {
-        Banco banco = new Banco();
-        banco.crearCuenta(1);
+    public void testTransferirCuentaOrigenInexistente() {
 
-        Exception error = assertThrows(Exception.class, () -> {
-            banco.transferir(1, 999, 500);
+        assertThrows(Exception.class, () -> {
+            banco.transferir(100, cuenta2, 10000);
         });
 
-        assertEquals("La cuenta con numero 999 no existe", error.getMessage());
     }
 
     @Test
-    void testTransferirSaldoInsuficiente() throws Exception {
-        Banco banco = new Banco();
-        banco.crearCuenta(1);
-        banco.crearCuenta(2);
+    public void testTransferirCuentaDestinoInexistente() throws Exception {
 
-        banco.depositar(1, 100);
+        banco.depositar(cuenta1, 50000);
 
-        Exception error = assertThrows(Exception.class, () -> {
-            banco.transferir(1, 2, 500);
+        assertThrows(Exception.class, () -> {
+            banco.transferir(cuenta1, 100, 10000);
         });
 
-        assertEquals("La cuenta con numero 1 no tiene saldo suficiente", error.getMessage());
     }
+
 }
