@@ -18,15 +18,14 @@ public class BancoTest {
 
         banco = new Banco();
 
-        // Crear usuario
         banco.crearUsuario(1, "Juan", "Calderon");
 
-        // Crear dos cuentas para el usuario
+       
         cuenta1 = banco.crearCuenta(1);
         cuenta2 = banco.crearCuenta(1);
     }
 
-    // PRUEBAS DE DEPOSITAR
+    
 
     @Test
     public void testDepositar() {
@@ -46,7 +45,7 @@ public class BancoTest {
 
     }
 
-    // PRUEBAS DE RETIRAR
+    
 
     @Test
     public void testRetirar() throws Exception {
