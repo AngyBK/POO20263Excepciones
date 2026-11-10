@@ -5,7 +5,6 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import logica.Banco;
 
 public class BancoTest {
 
@@ -18,14 +17,21 @@ public class BancoTest {
 
         banco = new Banco();
 
+
         banco.crearUsuario(1, "Juan", "Calderon");
 
        
         cuenta1 = banco.crearCuenta(1);
         cuenta2 = banco.crearCuenta(1);
+
     }
 
-    
+    @Test
+    public void testCrearUsuarioYCuentas() {
+
+        assertNotEquals(cuenta1, cuenta2);
+
+    }
 
     @Test
     public void testDepositar() {
@@ -44,8 +50,6 @@ public class BancoTest {
         });
 
     }
-
-    
 
     @Test
     public void testRetirar() throws Exception {
@@ -67,7 +71,6 @@ public class BancoTest {
 
     }
 
-    
     @Test
     public void testTransferir() throws Exception {
 
